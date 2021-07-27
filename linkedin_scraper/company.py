@@ -9,6 +9,7 @@ from .person import Person
 import time
 import os
 import json
+import re
 
 AD_BANNER_CLASSNAME = ('ad-banner-container', '__ad')
 
@@ -48,7 +49,7 @@ class Company(Scraper):
     showcase_pages = []
     affiliated_companies = []
 
-    def __init__(self, linkedin_url=None, name=None, about_us=None, website=None, headquarters=None, founded=None, industry=None, company_type=None, company_size=None, specialties=None, showcase_pages=[], affiliated_companies=[], driver=None, scrape=True, get_employees=True, close_on_complete=True):
+    def __init__(self, linkedin_url=None, name=None, about_us=None, website=None, headquarters=None, founded=None, industry=None, company_type=None, company_size=None, headcount=None, specialties=None, showcase_pages=[], affiliated_companies=[], driver=None, scrape=True, get_employees=True, close_on_complete=True):
         self.linkedin_url = linkedin_url
         self.name = name
         self.about_us = about_us
@@ -58,6 +59,7 @@ class Company(Scraper):
         self.industry = industry
         self.company_type = company_type
         self.company_size = company_size
+        self.headcount = headcount
         self.specialties = specialties
         self.showcase_pages = showcase_pages
         self.affiliated_companies = affiliated_companies
@@ -247,6 +249,8 @@ class Company(Scraper):
                 self.company_size = values[i+x_off].text.strip()
                 if len(values) > len(labels):
                     x_off = 1
+                # 3 is hardcoded as the headcount element
+                self.headcount = re.sub("[^0-9]", "", values[3].text.strip())
             elif txt == 'Headquarters':
                 self.headquarters = values[i+x_off].text.strip()
             elif txt == 'Type':
@@ -388,6 +392,7 @@ class Company(Scraper):
         _output['company_type'] = self.name
         _output['headquarters'] = self.headquarters
         _output['company_size'] = self.company_size
+        _output['headcount'] = self.headcount
         _output['founded'] = self.founded
         _output['affiliated_companies'] = self.affiliated_companies
         #_output['employees'] = self.employees
