@@ -303,34 +303,8 @@ class Company(Scraper):
         if get_employees:
             self.employees = self.get_employees()
 
-        #Debug here- 
-
-        desired_url= "https://www.linkedin.com/company/unavailable/"
-        wait = WebDriverWait(driver, 5)
-
-        def wait_for_unavailable(desired_url):
-            wait.until(
-                lambda driver: driver.current_url == desired_url
-            )
-
         driver.get(self.linkedin_url)
 
-        # Solution 1
-
-                # results_li_len = len(results_li)
-        # while is_loaded(results_li_len):
-        #     try:
-        #         driver.find_element_by_xpath(next_xpath).click()
-        #     except:
-        #         pass
-        #     _ = WebDriverWait(driver, wait_time).until(
-        #         EC.presence_of_element_located((By.CLASS_NAME, list_css)))
-
-        # Previous solution
-
-        # WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, 'artdeco-empty-state__message'))).click()
-
-        #debubg end
         if close_on_complete:
             driver.close()
 
