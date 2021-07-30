@@ -250,7 +250,8 @@ class Company(Scraper):
                 if len(values) > len(labels):
                     x_off = 1
                 # 3 is hardcoded as the headcount element
-                self.headcount = re.sub("[^0-9]", "", values[i+x_off].text.strip())
+                self.headcount = re.sub(
+                    "[^0-9]", "", values[i+x_off].text.strip())
             elif txt == 'Headquarters':
                 self.headquarters = values[i+x_off].text.strip()
             elif txt == 'Type':
