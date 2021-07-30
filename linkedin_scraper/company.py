@@ -304,6 +304,7 @@ class Company(Scraper):
             self.employees = self.get_employees()
 
         driver.get(self.linkedin_url)
+        #WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.CLASS_NAME, 'artdeco-empty-state__message'))).click()
 
         if close_on_complete:
             driver.close()
