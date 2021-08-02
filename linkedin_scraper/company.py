@@ -390,7 +390,7 @@ class Company(Scraper):
         _output['specialties'] = self.specialties
         _output['website'] = self.website
         _output['industry'] = self.industry
-        _output['company_type'] = self.name
+        _output['company_type'] = self.company_type
         _output['headquarters'] = self.headquarters
         _output['company_size'] = self.company_size
         _output['headcount'] = self.headcount
