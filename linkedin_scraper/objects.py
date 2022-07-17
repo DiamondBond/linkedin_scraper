@@ -6,21 +6,14 @@ class Contact(object):
     occupation = None
     url = None
 
-    def __init__(
-        self,
-        name=None,
-        occupation=None,
-        url=None
-    ):
+    def __init__(self, name=None, occupation=None, url=None):
 
         self.name = name
         self.occupation = occupation
         self.url = url
 
     def __repr__(self):
-        return "{name} ({occupation})".format(
-            name=self.name, occupation=self.occupation
-        )
+        return "{name} ({occupation})".format(name=self.name, occupation=self.occupation)
 
 
 class Institution(object):
@@ -133,7 +126,7 @@ class Scraper(object):
 
     def is_signed_in(self):
         try:
-            self.driver.find_element_by_id(c.VERIFY_LOGIN_ID)
+            self.driver.find_element("id", c.VERIFY_LOGIN_ID)
             return True
         except:
             pass

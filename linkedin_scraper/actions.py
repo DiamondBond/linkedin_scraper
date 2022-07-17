@@ -12,8 +12,8 @@ def __prompt_email_password():
 
 
 def page_has_loaded(driver):
-    page_state = driver.execute_script('return document.readyState;')
-    return page_state == 'complete'
+    page_state = driver.execute_script("return document.readyState;")
+    return page_state == "complete"
 
 
 def login(driver, email=None, password=None, cookie=None, timeout=10):
@@ -24,31 +24,26 @@ def login(driver, email=None, password=None, cookie=None, timeout=10):
         email, password = __prompt_email_password()
 
     driver.get("https://www.linkedin.com/login")
-    element = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.ID, "username")))
+    element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "username")))
 
-    email_elem = driver.find_element_by_id("username")
+    email_elem = driver.find_element("id", "username")
     email_elem.send_keys(email)
 
-    password_elem = driver.find_element_by_id("password")
+    password_elem = driver.find_element("id", "password")
     password_elem.send_keys(password)
     password_elem.submit()
 
     try:
-        if driver.url == 'https://www.linkedin.com/checkpoint/lg/login-submit':
-            remember = driver.find_element_by_id(c.REMEMBER_PROMPT)
+        if driver.url == "https://www.linkedin.com/checkpoint/lg/login-submit":
+            remember = driver.find_element("id", c.REMEMBER_PROMPT)
             if remember:
                 remember.submit()
 
-        element = WebDriverWait(driver, timeout).until(
-            EC.presence_of_element_located((By.ID, c.VERIFY_LOGIN_ID)))
+        element = WebDriverWait(driver, timeout).until(EC.presence_of_element_located((By.ID, c.VERIFY_LOGIN_ID)))
     except:
         pass
 
 
 def _login_with_cookie(driver, cookie):
     driver.get("https://www.linkedin.com/login")
-    driver.add_cookie({
-        "name": "li_at",
-        "value": cookie
-    })
+    driver.add_cookie({"name": "li_at", "value": cookie})
