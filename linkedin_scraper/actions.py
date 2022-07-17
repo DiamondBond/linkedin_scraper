@@ -24,7 +24,7 @@ def login(driver, email=None, password=None, cookie=None, timeout=10):
         email, password = __prompt_email_password()
 
     driver.get("https://www.linkedin.com/login")
-    element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "username")))
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "username")))
 
     email_elem = driver.find_element("id", "username")
     email_elem.send_keys(email)
@@ -39,9 +39,9 @@ def login(driver, email=None, password=None, cookie=None, timeout=10):
             if remember:
                 remember.submit()
 
-        element = WebDriverWait(driver, timeout).until(EC.presence_of_element_located((By.ID, c.VERIFY_LOGIN_ID)))
-    except:
-        pass
+        WebDriverWait(driver, timeout).until(EC.presence_of_element_located((By.ID, c.VERIFY_LOGIN_ID)))
+    except Exception as e:
+        print(e)
 
 
 def _login_with_cookie(driver, cookie):

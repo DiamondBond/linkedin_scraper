@@ -1,11 +1,8 @@
-import requests
-from lxml import html
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from .objects import Scraper
-from .person import Person
 import time
 import os
 import json
@@ -29,7 +26,7 @@ class CompanySummary(object):
         self.followers = followers
 
     def __repr__(self):
-        if self.followers == None:
+        if self.followers is None:
             return """ {name} """.format(name=self.name)
         else:
             return """ {name} {followers} """.format(name=self.name, followers=self.followers)
@@ -85,13 +82,14 @@ class Company(Scraper):
 
         if driver is None:
             try:
-                if os.getenv("CHROMEDRIVER") == None:
+                if os.getenv("CHROMEDRIVER") is None:
                     driver_path = os.path.join(os.path.dirname(__file__), "drivers/chromedriver")
                 else:
                     driver_path = os.getenv("CHROMEDRIVER")
 
                 driver = webdriver.Chrome(driver_path)
-            except:
+            except Exception as e:
+                print(e)
                 driver = webdriver.Chrome()
 
         driver.get(linkedin_url)
@@ -134,7 +132,7 @@ class Company(Scraper):
             # return _person
             return employee_object
         except Exception as e:
-            # print(e)
+            print(e)
             return None
 
     def get_employees(self, wait_time=10):
@@ -144,8 +142,9 @@ class Company(Scraper):
         driver = self.driver
 
         try:
-            see_all_employees = driver.find_element_by_xpath('//a[@data-control-name="topcard_see_all_employees"]')
-        except:
+            driver.find_element_by_xpath('//a[@data-control-name="topcard_see_all_employees"]')
+        except Exception as e:
+            print(e)
             pass
         driver.get(os.path.join(self.linkedin_url, "people"))
 
@@ -181,8 +180,8 @@ class Company(Scraper):
         while is_loaded(results_li_len):
             try:
                 driver.find_element_by_xpath(next_xpath).click()
-            except:
-                pass
+            except Exception as e:
+                print(e)
             _ = WebDriverWait(driver, wait_time).until(EC.presence_of_element_located((By.CLASS_NAME, list_css)))
 
             driver.execute_script("window.scrollTo(0, Math.ceil(document.body.scrollHeight/2));")
@@ -215,7 +214,8 @@ class Company(Scraper):
                 navigation.find_elements_by_xpath("//a[@data-control-name='page_member_main_nav_about_tab']"),
                 navigation.find_elements_by_xpath("//a[@data-control-name='org_about_module_see_all_view_link']"),
             ).click()
-        except:
+        except Exception as e:
+            print(e)
             driver.get(os.path.join(self.linkedin_url, "about"))
 
         _ = WebDriverWait(driver, 3).until(EC.presence_of_all_elements_located((By.TAG_NAME, "section")))
@@ -283,8 +283,8 @@ class Company(Scraper):
                 )
                 self.affiliated_companies.append(companySummary)
 
-        except:
-            pass
+        except Exception as e:
+            print(e)
 
         if get_employees:
             self.employees = self.get_employees()
@@ -298,7 +298,7 @@ class Company(Scraper):
         driver = self.driver
         retry_times = 0
         while self.is_signed_in() and retry_times <= retry_limit:
-            page = driver.get(self.linkedin_url)
+            _ = driver.get(self.linkedin_url)
             retry_times = retry_times + 1
 
         self.name = driver.find_element_by_class_name("name").text.strip()
@@ -327,8 +327,8 @@ class Company(Scraper):
                 )
                 self.showcase_pages.append(companySummary)
             driver.find_element_by_class_name("dialog-close").click()
-        except:
-            pass
+        except Exception as e:
+            print(e)
 
         # affiliated company
         try:
@@ -341,8 +341,8 @@ class Company(Scraper):
                     linkedin_url=affiliated_page.find_element_by_tag_name("a").get_attribute("href"), name=affiliated_page.text.strip()
                 )
                 self.affiliated_companies.append(companySummary)
-        except:
-            pass
+        except Exception as e:
+            print(e)
 
         if get_employees:
             self.employees = self.get_employees()
