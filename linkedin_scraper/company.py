@@ -1,12 +1,14 @@
+import json
+import os
+import re
+import time
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
 from .objects import Scraper
-import time
-import os
-import json
-import re
 
 AD_BANNER_CLASSNAME = ("ad-banner-container", "__ad")
 

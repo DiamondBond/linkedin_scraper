@@ -1,10 +1,13 @@
+import os
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from .objects import Experience, Education, Scraper, Interest, Accomplishment, Contact
-import os
+from selenium.webdriver.support.ui import WebDriverWait
+
 from linkedin_scraper import selectors
+
+from .objects import Accomplishment, Contact, Education, Experience, Interest, Scraper
 
 
 class Person(Scraper):

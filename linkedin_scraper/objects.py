@@ -1,4 +1,11 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from . import constants as c
+
+if TYPE_CHECKING:
+    from selenium.webdriver import Chrome
 
 
 class Contact(object):
@@ -6,7 +13,7 @@ class Contact(object):
     occupation = None
     url = None
 
-    def __init__(self, name=None, occupation=None, url=None):
+    def __init__(self, name: str = None, occupation: str = None, url: str = None):
 
         self.name = name
         self.occupation = occupation
@@ -102,7 +109,7 @@ class Education(Institution):
 class Interest(Institution):
     title = None
 
-    def __init__(self, title=None):
+    def __init__(self, title: str = None):
         self.title = title
 
     def __repr__(self):
@@ -122,38 +129,38 @@ class Accomplishment(Institution):
 
 
 class Scraper(object):
-    driver = None
+    driver: Chrome = None
 
-    def is_signed_in(self):
+    def is_signed_in(self) -> bool:
         try:
             self.driver.find_element("id", c.VERIFY_LOGIN_ID)
             return True
-        except:
-            pass
+        except Exception as e:
+            print(e)
         return False
 
     def __find_element_by_class_name__(self, class_name):
         try:
-            self.driver.find_element_by_class_name(class_name)
+            self.driver.find_element("xpath", class_name)
             return True
-        except:
-            pass
+        except Exception as e:
+            print(e)
         return False
 
     def __find_element_by_xpath__(self, tag_name):
         try:
-            self.driver.find_element_by_xpath(tag_name)
+            self.driver.find_element("xpath", tag_name)
             return True
-        except:
-            pass
+        except Exception as e:
+            print(e)
         return False
 
     def __find_enabled_element_by_xpath__(self, tag_name):
         try:
-            elem = self.driver.find_element_by_xpath(tag_name)
+            elem = self.driver.find_element("xpath", tag_name)
             return elem.is_enabled()
-        except:
-            pass
+        except Exception as e:
+            print(e)
         return False
 
     @classmethod
